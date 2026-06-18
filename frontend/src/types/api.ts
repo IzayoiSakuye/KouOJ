@@ -37,6 +37,40 @@ export interface ProblemDetail extends ProblemListItem
   updated_at: string
 }
 
+export interface ProblemWriteRequest
+{
+  title: string
+  description: string
+  input_description: string
+  output_description: string
+  difficulty: 'easy'|'medium'|'hard'
+  time_limit: number
+  memory_limit: number
+  is_public: boolean
+  tag_ids: number[]
+}
+
+export interface TestCase
+{
+  id: number
+  problem: number
+  input_data: string
+  output_data: string
+  is_sample: boolean
+  score: number
+  order: number
+}
+
+export interface TestCaseWriteRequest
+{
+  problem: number
+  input_data: string
+  output_data: string
+  is_sample: boolean
+  score: number
+  order: number
+}
+
 // 分页相应
 export interface PaginatedResponse<T>
 {
@@ -53,6 +87,7 @@ export interface User
   username: string
   email: string
   role: 'user'|'admin'
+  is_admin: boolean
   solved_count: number
   submit_count: number
   nickname: string
@@ -202,6 +237,19 @@ export interface Announcement
   title: string
   content: string
   created_at: string
+  is_pinned: boolean
+}
+
+export interface AdminAnnouncement extends Announcement
+{
+  is_active: boolean
+}
+
+export interface AnnouncementWriteRequest
+{
+  title: string
+  content: string
+  is_active: boolean
   is_pinned: boolean
 }
 

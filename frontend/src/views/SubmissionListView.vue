@@ -4,6 +4,7 @@
   import { getSubmissions } from '../api/submission';
   import type { Submission, SubmissionStatus } from '../types/api';
   import { getStatusClass, getStatusText } from '../utils/status';
+  import { formatDateTime } from '../utils/time';
 
   const submissions = ref<Submission[]> ([]);
   const loading = ref(false)
@@ -180,7 +181,7 @@
             <td>{{ submission.score }}</td>
             <td>{{ submission.time_used }} ms</td>
             <td>{{ submission.memory_used }} KB</td>
-            <td>{{ submission.created_at }}</td>
+            <td>{{ formatDateTime(submission.created_at) }}</td>
           </tr>
         </tbody>
       </table>

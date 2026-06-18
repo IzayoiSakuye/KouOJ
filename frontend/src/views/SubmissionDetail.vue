@@ -5,6 +5,7 @@
   import { createAgentRun } from '../api/aiAgent';
   import type { AgentHintLevel, AgentRun, Submission } from '../types/api';
   import { getStatusClass, getStatusText } from '../utils/status';
+  import { formatDateTime } from '../utils/time';
   const route = useRoute()
   const submission = ref<Submission|null>(null)
   const loading = ref(false)
@@ -187,12 +188,12 @@
 
             <div>
               <dt>提交时间</dt>
-              <dd>{{ submission.created_at }}</dd>
+              <dd>{{ formatDateTime(submission.created_at) }}</dd>
             </div>
 
             <div>
               <dt>判题时间</dt>
-              <dd>{{ submission.judged_at || '-' }}</dd>
+              <dd>{{ formatDateTime(submission.judged_at || '-' )}}</dd>
             </div>
           </dl>
         </div>

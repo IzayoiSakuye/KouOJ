@@ -9,6 +9,8 @@ import RegisterView from "../views/RegisterView.vue";
 import ProfileView from "../views/ProfileView.vue";
 import HomeView from "../views/HomeView.vue";
 import ProblemSolutionsView from "../views/ProblemSolutionsView.vue";
+import AdminView from "../views/AdminView.vue";
+import { useAuthStore } from "../stores/auth";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -74,13 +76,23 @@ const router = createRouter({
       },
     },
     {
+      path: '/admin',
+      name: 'admin',
+      component: AdminView,
+      meta:
+      {
+        requiresAuth: true,
+        requiresAdmin: true,
+      },
+    },
+    {
       path: '/',
       name: 'home',
       component: HomeView,
     }
   ],
 })
-router.beforeEach((to)=>
+router.beforeEach(async (to)=>
 {
   const token = localStorage.getItem('access_token')
   if (to.meta.requiresAuth && !token)
@@ -96,6 +108,32 @@ router.beforeEach((to)=>
   if (to.meta.guestOnly && token)
   {
     return '/problems'
+  }
+  if (to.meta.requiresAdmin)
+  {
+    const authStore = useAuthStore()
+    if (!authStore.user)
+    {
+      try
+      {
+        await authStore.loadMe()
+      }
+      catch
+      {
+        authStore.logout()
+        return {
+          path: '/login',
+          query:
+          {
+            redirect: to.fullPath,
+          },
+        }
+      }
+    }
+    if (!authStore.user?.is_admin)
+    {
+      return '/'
+    }
   }
   return true
 })

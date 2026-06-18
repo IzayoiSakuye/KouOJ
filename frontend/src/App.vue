@@ -40,6 +40,7 @@
       <div class="nav-links">
         <RouterLink to="/problems">题目</RouterLink>
         <RouterLink to="/submissions">提交记录</RouterLink>
+        <RouterLink v-if="authStore.user?.is_admin" to="/admin">管理</RouterLink>
       </div>
 
       <div class="nav-user">
