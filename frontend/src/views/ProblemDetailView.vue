@@ -263,7 +263,7 @@
           </button>
         </div>
         
-        <Codemirror v-model="code" class="ide-editor" :extensions="editorExtensions"/>
+        <Codemirror v-model="code" class="ide-editor" :extensions="editorExtensions" force-linting/>
         
         <p v-if="submitError">{{ submitError }}</p>
 

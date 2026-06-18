@@ -173,8 +173,10 @@
 
           <p v-else>暂无公告</p>
         </section>
+
       </div>
     </div>
+
   </main>
 </template>
 
@@ -367,9 +369,15 @@
   align-items: start;
 }
 
+.home-grid > section
+{
+  min-width: 0;
+}
+
 .problem-list,
 .announcement-list
 {
+  min-width: 0;
   display: grid;
 }
 
@@ -392,19 +400,37 @@
 
 .announcement-item
 {
+  min-width: 0;
   padding: 14px 0;
   border-bottom: 1px solid var(--border);
 }
 
 .announcement-title
 {
+  min-width: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
+}
+
+.announcement-title strong
+{
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.announcement-item p
+{
+  max-width: 100%;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .pinned
 {
+  flex: 0 0 auto;
   padding: 2px 6px;
   border-radius: 4px;
   color: var(--danger);
