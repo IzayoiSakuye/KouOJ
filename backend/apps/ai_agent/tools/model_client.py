@@ -46,7 +46,7 @@ def call_chat_completion(messages: list[dict[str, str]]) -> dict[str, Any]:
         "model": model,
         "messages": messages,
         "temperature": _safe_float(getattr(settings, "KOUOJ_AI_MODEL_TEMPERATURE", 0), 0.0),
-        "max_tokens": 900,
+        "max_tokens": 10000,
     }
     headers = {
         "Authorization": f"Bearer {api_key}",

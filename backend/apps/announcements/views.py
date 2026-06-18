@@ -1,14 +1,20 @@
-from rest_framework import generics
-from rest_framework.permissions import AllowAny
+from rest_framework import viewsets
+
+from apps.problems.permissions import IsAdminOrReadOnly
 
 from .models import Announcement
 from .serializers import AnnouncementSerializer
 
-class AnnouncementListView(generics.ListAPIView):
-  '''公告列表视图，返回所有活跃的公告，置顶公告优先显示'''
+
+class AnnouncementViewSet(viewsets.ModelViewSet):
   serializer_class = AnnouncementSerializer
-  permission_classes = [AllowAny]
+  permission_classes = [IsAdminOrReadOnly]
+  search_fields = ("title", "content")
+  ordering_fields = ("created_at", "is_pinned")
 
   def get_queryset(self):
-    return Announcement.objects.filter(is_active =True)
-
+    queryset = Announcement.objects.all()
+    user = self.request.user
+    if not (user.is_authenticated and user.is_admin):
+      queryset = queryset.filter(is_active=True)
+    return queryset

@@ -6,10 +6,23 @@ User = get_user_model()
 
 # 基本信息
 class UserSerializer(serializers.ModelSerializer):
+    is_admin = serializers.BooleanField(read_only=True)
+
     class Meta:
         model = User
-        fields = ("id", "username", "email", "role", "solved_count", "submit_count", "nickname", "bio", "avatar_url")
-        read_only_fields = ("id", "username", "role", "solved_count", "submit_count")
+        fields = (
+            "id",
+            "username",
+            "email",
+            "role",
+            "is_admin",
+            "solved_count",
+            "submit_count",
+            "nickname",
+            "bio",
+            "avatar_url",
+        )
+        read_only_fields = ("id", "username", "role", "is_admin", "solved_count", "submit_count")
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=6)

@@ -9,6 +9,8 @@ class AnnouncementSerializer(serializers.ModelSerializer):
       "id",
       "title",
       "content",
+      "is_active",
       "is_pinned",
       "created_at",
     ]
+    read_only_fields = ["created_at"]

@@ -1,8 +1,6 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAdminUser 
-
 from .models import Problem, Tag, TestCase
-from .permissions import IsAdminOrReadOnly
+from .permissions import IsAdminOrReadOnly, IsOJAdmin
 from .serializers import (
     ProblemDetailSerializer,
     ProblemListSerializer,
@@ -42,7 +40,9 @@ class TagViewSet(viewsets.ModelViewSet):
 
 class TestCaseViewSet(viewsets.ModelViewSet):
     serializer_class = TestCaseSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsOJAdmin]
+    filterset_fields = ("problem", "is_sample")
+    ordering_fields = ("id", "order")
 
     def get_queryset(self):
         return TestCase.objects.select_related("problem")

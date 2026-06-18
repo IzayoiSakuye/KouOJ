@@ -1,7 +1,9 @@
-from django.urls import path
-from .views import AnnouncementListView
+from rest_framework.routers import DefaultRouter
 
-# 公告相关的URL配置
-urlpatterns = [
-  path("", AnnouncementListView.as_view(), name="announcement-list"),
-]
+from .views import AnnouncementViewSet
+
+
+router = DefaultRouter()
+router.register("", AnnouncementViewSet, basename="announcement")
+
+urlpatterns = router.urls
