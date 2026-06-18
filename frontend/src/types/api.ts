@@ -234,3 +234,42 @@ export interface CreateSolutionRequest
   language: string
   is_public?: boolean
 }
+
+// 单次提交复盘 Agent
+export type AgentHintLevel = 'direction'|'locate'|'explain'
+
+export type AgentRunStatus = 'RUNNING'|'COMPLETED'|'FAILED'
+
+export interface CreateAgentRunRequest
+{
+  submission_id: number
+  hint_level: AgentHintLevel
+}
+
+export interface AgentStep
+{
+  id: number
+  step_type: string
+  input_summary: string
+  output_summary: string
+  success: boolean
+  created_at: string
+}
+
+export interface AgentRun
+{
+  id: number
+  submission_id: number
+  problem_title: string
+  hint_level: AgentHintLevel
+  status: AgentRunStatus
+  selected_solution: number|null
+  selected_solution_title: string
+  final_message: string
+  confidence: number
+  steps_count: number
+  error_message: string
+  steps: AgentStep[]
+  created_at: string
+  updated_at: string
+}

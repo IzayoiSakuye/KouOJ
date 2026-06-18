@@ -20,6 +20,9 @@ python -m venv .venv-win
 python -m pip install -r requirements.txt
 ```
 
+本项目的后端诊断 agent 使用 LangGraph 编排流程，并使用 Tavily 做外部题解资料搜索。
+如果只想先跑通基础 OJ 功能，可以不配置 Tavily Key；agent 会自动跳过网页搜索。
+
 如果你使用 WSL，请在 WSL 里重新创建虚拟环境：
 
 ```bash
@@ -63,6 +66,30 @@ KOUOJ_DB_PASSWORD
 KOUOJ_DB_HOST
 KOUOJ_DB_PORT
 ```
+
+如果要启用后端 agent 的 Tavily 网页搜索工具，在 `.env` 中增加：
+
+```text
+KOUOJ_TAVILY_API_KEY=你的 Tavily API Key
+KOUOJ_TAVILY_MAX_RESULTS=5
+KOUOJ_TAVILY_SEARCH_DEPTH=basic
+```
+
+Tavily 目前只作为后端 agent 的内部资料检索工具使用，不直接提供给前端页面调用。
+
+如果要让 agent 后续接入真实大模型，在 `.env` 中配置模型服务：
+
+```text
+KOUOJ_AI_MODEL_PROVIDER=openai-compatible
+KOUOJ_AI_MODEL_BASE_URL=https://api.openai.com/v1
+KOUOJ_AI_MODEL_API_KEY=你的模型 API Key
+KOUOJ_AI_MODEL_NAME=gpt-4o-mini
+KOUOJ_AI_MODEL_TEMPERATURE=0
+KOUOJ_AI_MODEL_TIMEOUT=30
+```
+
+`KOUOJ_AI_MODEL_BASE_URL` 可以换成其它 OpenAI-compatible 服务地址，例如 DeepSeek、
+通义千问兼容接口或本地代理地址。
 
 临时不用 MySQL、只想先检查 Django 是否能跑时，可以用 SQLite：
 
@@ -147,6 +174,31 @@ POST /api/tags/                管理员
 POST /api/submissions/
 GET  /api/submissions/
 GET  /api/submissions/{id}/
+```
+
+诊断 Agent：
+
+```text
+POST /api/ai-agent/runs/
+GET  /api/ai-agent/runs/
+GET  /api/ai-agent/runs/{id}/
+```
+
+创建诊断示例：
+
+```json
+{
+  "submission_id": 1,
+  "hint_level": "direction"
+}
+```
+
+`hint_level` 可选：
+
+```text
+direction  方向提示
+locate     定位问题
+explain    详细解释
 ```
 
 提交代码示例：

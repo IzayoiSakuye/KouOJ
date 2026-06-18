@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     "apps.problems",
     "apps.submissions",
     "apps.judge",
+    "apps.ai_agent",
     'apps.announcements',
     "apps.home",
     "apps.solutions",
@@ -114,3 +115,32 @@ SIMPLE_JWT = {
 }
 
 JUDGE_PYTHON_COMMAND = os.environ.get("KOUOJ_JUDGE_PYTHON", "python")
+
+# Tavily 网页搜索配置。
+# 当前项目只把 Tavily 作为后端 agent 的内部资料检索工具，不直接暴露给前端。
+# API Key 必须通过环境变量注入，避免把真实密钥写进代码仓库。
+KOUOJ_TAVILY_API_KEY = os.environ.get("KOUOJ_TAVILY_API_KEY", "")
+
+# Tavily 单次搜索结果数量。默认 5 条，工具层会再次限制到 1~20，避免环境变量写错。
+KOUOJ_TAVILY_MAX_RESULTS = os.environ.get("KOUOJ_TAVILY_MAX_RESULTS", "5")
+
+# Tavily 搜索深度。默认 basic，成本低且足够用于 v1 的外部题解资料检索。
+KOUOJ_TAVILY_SEARCH_DEPTH = os.environ.get("KOUOJ_TAVILY_SEARCH_DEPTH", "basic")
+
+# AI 模型配置。
+# 这里先按 OpenAI-compatible 接口预留配置：很多模型服务都支持 base_url + api_key + model
+# 这种调用方式。后续真正把 LangGraph 的 render/decision 节点接入 LLM 时，统一从这里取值。
+KOUOJ_AI_MODEL_PROVIDER = os.environ.get("KOUOJ_AI_MODEL_PROVIDER", "openai-compatible")
+
+# 模型服务地址，例如 OpenAI、DeepSeek、通义千问兼容模式、本地 Ollama 代理等。
+KOUOJ_AI_MODEL_BASE_URL = os.environ.get("KOUOJ_AI_MODEL_BASE_URL", "")
+
+# 模型 API Key 必须从环境变量读取，不能写死在代码里。
+KOUOJ_AI_MODEL_API_KEY = os.environ.get("KOUOJ_AI_MODEL_API_KEY", "")
+
+# 默认模型名。真实使用哪个模型由 .env 决定，代码只提供一个便于开发的默认值。
+KOUOJ_AI_MODEL_NAME = os.environ.get("KOUOJ_AI_MODEL_NAME", "gpt-4o-mini")
+
+# 模型调用的温度和超时配置。温度默认 0，让诊断输出更稳定；超时默认 30 秒。
+KOUOJ_AI_MODEL_TEMPERATURE = os.environ.get("KOUOJ_AI_MODEL_TEMPERATURE", "0")
+KOUOJ_AI_MODEL_TIMEOUT = os.environ.get("KOUOJ_AI_MODEL_TIMEOUT", "30")
