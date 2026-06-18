@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'apps.announcements',
     "apps.home",
     "apps.solutions",
+    "apps.audit",
 ]
 
 MIDDLEWARE = [
@@ -37,8 +38,10 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "apps.audit.middleware.OperationLogMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    
 ]
 
 ROOT_URLCONF = "config.urls"
